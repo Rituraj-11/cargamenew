@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        #error{
+            color: red;
+
+        }
+    </style>
+</head>
+<body>
+    <form class="login">
+        <fieldset>
+            <p id='error'></p>
+            <legend><b>LOGIN FORM</b></legend><br>
+
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="emailL" placeholder="Enter your Email"><br><br>
+
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="passwordL" placeholder="Enter your password"><br><br>
+
+            <input type="submit">
+        </fieldset>
+    </form>
+
+
+    <!-- <script src="./app.js"></script> -->
+    <script>
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+
+        let login_form=document.querySelector('.login');
+        login_form.addEventListener('submit',loginForm);
+
+        let emailLog=document.getElementById('emailL');
+        let passwordLog=document.getElementById('passwordL');
+        let error=document.getElementById('error');
+
+
+        // let dataN;
+        function loginForm(e){ 
+            e.preventDefault();  //stop the submit and hold the data from 
+
+            dataN=JSON.parse(localStorage.getItem('data'));
+        //       = it convert string to object
+
+            let email=emailLog.value; 
+            let password=passwordLog.value;
+            let cases=["Email not found","Password Incorrect", "login sucessfull"];
+            let x= checkLogin(email,password);
+            if(x==0 || x==1){
+                error.innerHTML=cases[x];
+            }else{
+
+                error.innerHTML=cases[x];
+                JSON.parse(localStorage.getItem('data'));
+                window.location.href="./carGame.html";
+            }
+        
+        }
+
+        //Check Email match or not
+        function checkLogin(email,password){
+            let flag=0;
+            for(let t of dataN){
+                if(email==t.email){
+                    if(password==t.password){
+                        // return "login sucssfully";
+                        return 2;
+                    }else{
+                        // return "password incorrect";
+                        return 1;
+                    }
+                    flag=1;
+                }
+            }
+            if(flag==0){
+                // return "Email not found";
+                return 0;
+            }
+        }
+
+        //create a random TOKEN
+        function genarateToken(){
+            let capital_digit="ABCDEFGHIJKLMNOPQRSTUVWXYZ";  //4
+            let small_digit="abcdefghijklmnopqrstuvwxyz";    //4
+            let number="0123456789";                         //1
+            let special="!@#$%^&*()_+";                      //1
+
+            let characters=capital_digit+small_digit+number+special;
+            let token="";
+            for(let i=0;i<10;i++){
+                let random= Math.floor(Math.random()*characters.length);
+                token=token+characters[random]
+            }
+            return token;   //store  the token in the person obbject who logged in
+
+        }
+
+
+
+
+
+
+        // function genarateToken1(){
+        //     let characters=crypto.randomUUID();
+        //     let token="";
+        //     for(let i=0;i<10;i++){
+        //         let random= Math.floor(Math.random()*characters.length);
+        //         token=token+characters[random]
+        //         // console.log(token);
+        //     }
+        //     return token;
+        // }
+        // console.log(genarateToken1());
+
+
+
+
+    </script>
+</body>
+</html>
